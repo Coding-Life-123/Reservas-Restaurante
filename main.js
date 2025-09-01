@@ -27,11 +27,8 @@ class Reserva {
     }
 }
 
-let Mesa1 = new Mesa(1, 4, 'patio', "disponible", 50, 50);
-let Mesa2 = new Mesa(2, 6, 'centro', "disponible", 150, 150);
-let Reserva1 = new Reserva(1, 'David Ordoñez', 5, "2025-09-20", "10:20", 3, "pendiente");
-let listaMesas = [Mesa1, Mesa2];
-let listaReservas = [Reserva1];
+let listaMesas = [];
+let listaReservas = [];
 
 function cargarMesas() {
     const mesasGuardadas = localStorage.getItem('mesasRestaurante');
@@ -106,18 +103,39 @@ function renderizarReservas(){
     listaReservas.forEach(reserva =>{
         const reservaDiv = document.createElement('div');
         reservaDiv.className =`reserva ${reserva.estadoReserva}`;
-        reservaDiv.id = `reserva-${reserva.id}`;
+        reservaDiv.id = `reserva-${reserva.idReserva}`;
         reservaDiv.innerHTML=`
-            <h2>Reserva ${reserva.idReserva}</h2>
-            <p>Cliente: ${reserva.nombreCliente}</p>
-            <p>Num. Personas: ${reserva.numeroPersonas}</p>
-            <p>Fecha: ${reserva.fechaReserva}</p>
-            <p>Hora: ${reserva.horaReserva}</p>
-            <p>Mesa Asignada: ${reserva.idMesaAsignada}</p>
-            <p>Ocasión Especial: ${reserva.ocasionEspecial}</p>
-            <p>Notas: ${reserva.notasAdicionales}</p>
-            <p>Estado: ${reserva.estadoReserva}</p>
+            <div class="reserva-head">
+                <h2>Reserva ${reserva.idReserva}</h2>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                </svg>
+                <div class="opciones-reserva" id="opcionesReserva">
+                    <button>Editar</button>
+                    <button>Pagar Cuenta</button>
+                    <button onclick="eliminarReserva(${reserva.idReserva})">Eliminar</button>
+                </div>
+            </div>            
+            <div class="reserva-info">
+                <div>
+                    <p><Strong>Cliente:</Strong> ${reserva.nombreCliente}</p>
+                    <p><Strong>Num. Personas:</Strong> ${reserva.numeroPersonas}</p>
+                </div>
+                <div>
+                    <p><Strong>Fecha:</Strong> ${reserva.fechaReserva}</p>
+                    <p><Strong>Hora:</Strong> ${reserva.horaReserva}</p>
+                </div>
+                <div>
+                    <p><Strong>Mesa Asignada:</Strong> ${reserva.idMesaAsignada}</p>
+                    <p><Strong>Ocasión Especial:</Strong> ${reserva.ocasionEspecial}</p>
+                </div>
+                <div>
+                    <p><Strong>Notas:</Strong> ${reserva.notasAdicionales}</p>
+                    <p><Strong>Estado:</Strong> ${reserva.estadoReserva}</p>
+                </div>
+            </div>
         `;
+        docReservas.appendChild(reservaDiv);
     });
 }
 
@@ -185,7 +203,7 @@ function agregarMesa(capacidad, ubicacion, estado) {
 }
 
 function agregarReserva(nombreCliente, numeroPersonas, fechaReserva, horaReserva, idMesaAsignada, estadoReserva, ocasionEspecial, notasAdicionales){
-    const nuevaId = listaReservas.length > 0 ? Math.max(...listaReservas.map(m => m.id)) + 1 : 1;
+    const nuevaId = listaReservas.length > 0 ? Math.max(...listaReservas.map(r => r.idReserva)) + 1 : 1;
     const nuevaReserva = new Reserva(
         nuevaId,
         nombreCliente,
@@ -193,9 +211,9 @@ function agregarReserva(nombreCliente, numeroPersonas, fechaReserva, horaReserva
         fechaReserva,
         horaReserva,
         idMesaAsignada,
-        estadoReserva,
-        ocasionEspecial,
-        notasAdicionales
+        estadoReserva ? estadoReserva: "No",
+        ocasionEspecial ? ocasionEspecial: "No",
+        notasAdicionales ? notasAdicionales: "No"
     );
 
     listaReservas.push(nuevaReserva);
@@ -206,6 +224,7 @@ function agregarReserva(nombreCliente, numeroPersonas, fechaReserva, horaReserva
 
 document.addEventListener('DOMContentLoaded', () => {
     cargarMesas();
+    cargarReservas();
 });
 
 document.getElementById("formMesa").addEventListener("submit",()=>{
@@ -213,19 +232,20 @@ document.getElementById("formMesa").addEventListener("submit",()=>{
     let ubicacionNuevaMesa = document.getElementById("inputUbi").value;
     let estadoNuevaMesa = document.getElementById("estado").value;
     agregarMesa(capacidadNuevaMesa, ubicacionNuevaMesa, estadoNuevaMesa);
-    
+    alternarModal('modalMesa', 'mesaContainer');
 })
 
 document.getElementById("formReserva").addEventListener("submit", ()=>{
     let nombreCliente = document.getElementById("persona").value;
-    let cantPersonas = document.getElementById("cantPersonas").value;
+    let cantPersonas = parseInt(document.getElementById("cantPersonas").value);
     let fechaReserva = document.getElementById("fechaReserva").value;
     let horaReserva = document.getElementById("horaReserva").value;
     let ocasionEspecial = document.getElementById("ocasionReserva").value;
     let notasAdicionales = document.getElementById("notasReserva").value
-    let mesaReserva = document.getElementById("mesaReserva").value;
+    let mesaReserva = parseInt(document.getElementById("mesaReserva").value);
     let estadoReserva = document.getElementById("estadoReserva").value;
     agregarReserva(nombreCliente, cantPersonas, fechaReserva, horaReserva, mesaReserva, estadoReserva, ocasionEspecial, notasAdicionales);
+    alternarModal('modalReserva', 'reservaContainer');
 })
 
 //programar mínimo de fecha para el modal de reserva

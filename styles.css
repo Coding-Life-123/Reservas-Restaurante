@@ -193,6 +193,76 @@ body {
             height: 100%;
             margin: 10px 0px;
             border: 1px solid white;
+
+            .reserva{
+                height: fit-content;
+                width: 95%;
+                margin: auto;
+                margin-top: 20px;
+                border-radius: 10px;
+                padding: 10px;
+                
+                .reserva-head{
+                    h2{
+                        font-size: 22px;
+                    }
+                }                
+
+                .reserva-info{
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    padding: 10px;
+                    height: 60px;
+
+                    div{
+                        margin: 0 5px;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+
+                    }
+                }
+            }
+            .confirmada{
+                background-color: #218838;
+            }
+
+            .confirmada:hover{
+                background-color: #28a745;
+            }
+
+            .pendiente{
+                background-color: #FF6B35;
+            }
+
+            .pendiente:hover{
+                background-color: #FF854D;
+            }
+
+            .cancelada{
+                background-color: #c82333;
+            }
+
+            .cancelada:hover{
+                background-color: #dc3545;
+            }
+
+            .finalizada{
+                background-color: #0069d9;
+            }
+
+            .finalizada:hover{
+                background-color: #007bff;
+            }
+
+            .no{
+                background-color: #5a6268;
+            }
+
+            .no:hover{
+                background-color: #6c757d;
+            }
         }
     }
 
