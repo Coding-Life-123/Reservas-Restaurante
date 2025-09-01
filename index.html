@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="main">
+      
+      <!--barra navegación-->
+      <div class="navbarContainer">
+        <button class="menu-button" id="menuButton">
+          <svg xmlns="http://www.w3.org/2000/svg" id="burger" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+          </svg>
+          <p>Menú</p>
+        </button>
+        <div class="navbar" id="navbar">
+          <button onclick="alternarPagina('adminMesas')">Mesas</button>
+          <button onclick="alternarPagina('adminReservas')">Reservas</button>
+        </div>
+      </div>
+
+      <!--administrador de mesas-->
+      <div class="admin-mesas" id="adminMesas">
+        <h1>Administración de Mesas</h1>
+        <button class="addMesa" onclick="alternarModal('modalMesa')">+ Mesa</button>
+        <div class="tables" id="tablesContainer"></div>
+      </div>
+
+      <!--administrador reservas-->
+      <div class="admin-reservas" id="adminReservas">
+        <h1>Administración de Reservas</h1>
+        <button class="addReserva" onclick="alternarModal('modalReserva')">+ Reserva</button>
+        <div class="reservas" id="reservasContainer"></div>
+      </div>
+    </div>
+
+    <!-- codigo modales -->
+    <div class="modal" id="modalContainer">
+      <!--formulario mesas-->
+      <dialog class="mesa-modal" id="modalMesa">
+        <button onclick="alternarModal('modalMesa')">X</button>
+        <h1>AGREGAR NUEVA MESA</h1>
+
+        <!--formulario-->
+        <form id="formTable">
+            <div class="form-group">
+                <label for="cant">Capacidad:</label>
+                <select name="cantidad" id="cant">
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="inputUbi">Ubicación:</label>
+                <input type="text" name="estado" id="inputUbi"/>
+            </div>
+            <div class="form-group">
+                <label for="estado">Estado:</label>
+                <select name="estado" id="estado">
+                  <option value="disponible">Disponible</option>
+                  <option value="ocupada">Ocupada</option>
+                  <option value="deshabilitada">Deshabilitada</option>
+                </select>
+            </div>
+            <p class="error-parag" id="errorParag"></p>
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+                fill="none" stroke="currentColor" stroke-width="1" 
+                class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" 
+                        d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                </svg>
+            </button>
+        </form>
+      </dialog>
+      <!--formulario reservas-->
+      <dialog class="reserva-modal" id="modalReserva">
+
+      </dialog>
+    </div>
+    <script src="main.js"></script>
+    <script src="styles.js"></script>
+  </body>
+</html>
