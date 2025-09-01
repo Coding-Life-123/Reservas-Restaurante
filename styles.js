@@ -1,12 +1,12 @@
-function alternarModal(id){
+function alternarModal(id, container){
     let estado = getComputedStyle(document.getElementById(id)).display;
     console.log(estado);
     if(estado == "flex"){
         document.getElementById(id).style.display = "none";
-        document.getElementById("modalContainer").style.display = "none";
+        document.getElementById(container).style.display = "none";
     }else if(estado == "none"){
         document.getElementById(id).style.display = "flex";
-        document.getElementById("modalContainer").style.display = "flex";
+        document.getElementById(container).style.display = "flex";
     };
 };
 
@@ -28,4 +28,4 @@ function alternarPagina(pag){
     }
 }
 
-document.getElementById('adminReservas').style.display="none";
+document.getElementById('adminMesas').style.display="none";

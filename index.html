@@ -27,27 +27,27 @@
       <!--administrador de mesas-->
       <div class="admin-mesas" id="adminMesas">
         <h1>Administración de Mesas</h1>
-        <button class="addMesa" onclick="alternarModal('modalMesa')">+ Mesa</button>
+        <button class="addMesa" onclick="alternarModal('modalMesa', 'mesaContainer')">+ Mesa</button>
         <div class="tables" id="tablesContainer"></div>
       </div>
 
       <!--administrador reservas-->
       <div class="admin-reservas" id="adminReservas">
         <h1>Administración de Reservas</h1>
-        <button class="addReserva" onclick="alternarModal('modalReserva')">+ Reserva</button>
+        <button class="addReserva" onclick="alternarModal('modalReserva', 'reservaContainer')">+ Reserva</button>
         <div class="reservas" id="reservasContainer"></div>
       </div>
     </div>
 
     <!-- codigo modales -->
-    <div class="modal" id="modalContainer">
+    <div class="mesa-container" id="mesaContainer">
       <!--formulario mesas-->
       <dialog class="mesa-modal" id="modalMesa">
-        <button onclick="alternarModal('modalMesa')">X</button>
+        <button onclick="alternarModal('modalMesa', 'mesaContainer')">X</button>
         <h1>AGREGAR NUEVA MESA</h1>
 
         <!--formulario-->
-        <form id="formTable">
+        <form id="formMesa">
             <div class="form-group">
                 <label for="cant">Capacidad:</label>
                 <select name="cantidad" id="cant">
@@ -69,20 +69,72 @@
                   <option value="deshabilitada">Deshabilitada</option>
                 </select>
             </div>
-            <p class="error-parag" id="errorParag"></p>
+            <p class="error-parag" id="errorParagMesa"></p>
             <button type="submit" class="submit-btn" id="submitBtn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
-                fill="none" stroke="currentColor" stroke-width="1" 
-                class="bi bi-arrow-right" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" 
-                        d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
                 </svg>
             </button>
         </form>
       </dialog>
-      <!--formulario reservas-->
+    </div>
+    <div class="reserva-container" id="reservaContainer">
       <dialog class="reserva-modal" id="modalReserva">
+        <button onclick="alternarModal('modalReserva', 'reservaContainer')">X</button>
+        <h1>AGREGAR NUEVA RESERVA</h1>
 
+        <!--formulario-->
+        <form id="formReserva">
+          <div class="form-group">
+            <label for="persona">Nombre del Cliente:</label>
+            <input type="text" name="persona" id="persona">
+          </div>
+          <div class="form-group">
+            <label for="cantPersonas">Cantidad de Personas:</label>
+            <input type="number" name="cantPersonas" id="cantPersonas" max="8" min="1">
+          </div>
+          <div class="form-group">
+            <label for="fechaReserva">Fecha de la Reserva:</label>
+            <input type="date" name="fechaReserva" id="fechaReserva" >
+          </div>
+          <div class="form-group">
+            <label for="horaReserva">Hora de la Reserva:</label>
+            <input type="time" name="horaReserva" id="horaReserva" min="08:00" max="20:00" required>
+          </div>
+          <div class="form-group">
+            <label for="ocasionReserva">Ocasión Especial:</label>
+            <input type="text" name="ocasionReserva" id="ocasionReserva">
+          </div>
+          <div class="form-group">
+            <label for="notasReserva">Notas adicionales:</label>
+            <input type="text" name="notasReserva" id="notasReserva">
+          </div>
+          <div class="form-group">
+            <label for="mesaReserva">Número de Mesa Asignada:</label>
+            <input type="number" name="mesaReserva" id="mesaReserva">
+          </div>
+          <div class="form-group">
+            <label for="estadoReserva">Estado de la Reserva:</label>
+            <select name="estadoReserva" id="estadoReserva">
+              <option value="pendiente">Pendiente</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="cancelada">Cancelada</option>
+              <option value="finalizada">Finalizada</option>
+              <option value="no show">No show</option>
+            </select>
+          </div>
+          <div class="error" id="error">
+            <strong>Error:</strong>
+            <p class="error-parag" id="errorParagReserva">
+
+            </p>
+          </div>
+          <button type="submit" class="submit-btn" id="submitBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1" class="bi bi-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+            </svg>
+          </button>
+        </form>
       </dialog>
     </div>
     <script src="main.js"></script>

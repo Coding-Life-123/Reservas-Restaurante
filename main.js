@@ -27,33 +27,11 @@ class Reserva {
     }
 }
 
-function renderizarReservas(){
-    const docReservas = document.getElementById("reservasContainer");
-    docReservas.innerHTML = '';
-
-    listaReservas.forEach(reserva =>{
-        const reservaDiv = document.createElement('div');
-        reservaDiv.className =`reserva ${reserva.estadoReserva}`;
-        reservaDiv.id = `reserva-${reserva.id}`;
-        reservaDiv.innerHTML=`
-            <h2>Reserva ${reserva.idReserva}</h2>
-            <p>Cliente: ${reserva.nombreCliente}</p>
-            <p>Num. Personas: ${reserva.numeroPersonas}</p>
-            <p>Fecha: ${reserva.fechaReserva}</p>
-            <p>Hora: ${reserva.horaReserva}</p>
-            <p>Mesa Asignada: ${reserva.idMesaAsignada}</p>
-            <p>Ocasión Especial: ${reserva.ocasionEspecial}</p>
-            <p>Notas: ${reserva.notasAdicionales}</p>
-            <p>Estado: ${reserva.estadoReserva}</p>
-        `;
-    });
-}
-
 let Mesa1 = new Mesa(1, 4, 'patio', "disponible", 50, 50);
 let Mesa2 = new Mesa(2, 6, 'centro', "disponible", 150, 150);
-let Reserva1 = new Reserva(1, 'David Ordoñez', 5)
+let Reserva1 = new Reserva(1, 'David Ordoñez', 5, "2025-09-20", "10:20", 3, "pendiente");
 let listaMesas = [Mesa1, Mesa2];
-let listaReservas = [];
+let listaReservas = [Reserva1];
 
 function cargarMesas() {
     const mesasGuardadas = localStorage.getItem('mesasRestaurante');
@@ -71,8 +49,31 @@ function cargarMesas() {
     renderizarMesas();
 }
 
+function cargarReservas(){
+    const reservasGuardadas = localStorage.getItem('reservasRestaurante');
+    if(reservasGuardadas){
+        const reservasData = JSON.parse(reservasGuardadas);
+        listaReservas = reservasData.map(reserva => new Reserva(
+            reserva.idReserva,
+            reserva.nombreCliente,
+            reserva.numeroPersonas,
+            reserva.fechaReserva,
+            reserva.horaReserva,
+            reserva.idMesaAsignada,
+            reserva.estadoReserva,
+            reserva.ocasionEspecial,
+            reserva.notasAdicionales
+        ));
+    }
+    renderizarReservas();
+}
+
 function guardarMesas() {
     localStorage.setItem('mesasRestaurante', JSON.stringify(listaMesas));
+}
+
+function guardarReservas(){
+    localStorage.setItem('reservasRestaurante', JSON.stringify(listaReservas));
 }
 
 function renderizarMesas() {
@@ -98,7 +99,27 @@ function renderizarMesas() {
     });
 }
 
+function renderizarReservas(){
+    const docReservas = document.getElementById("reservasContainer");
+    docReservas.innerHTML = '';
 
+    listaReservas.forEach(reserva =>{
+        const reservaDiv = document.createElement('div');
+        reservaDiv.className =`reserva ${reserva.estadoReserva}`;
+        reservaDiv.id = `reserva-${reserva.id}`;
+        reservaDiv.innerHTML=`
+            <h2>Reserva ${reserva.idReserva}</h2>
+            <p>Cliente: ${reserva.nombreCliente}</p>
+            <p>Num. Personas: ${reserva.numeroPersonas}</p>
+            <p>Fecha: ${reserva.fechaReserva}</p>
+            <p>Hora: ${reserva.horaReserva}</p>
+            <p>Mesa Asignada: ${reserva.idMesaAsignada}</p>
+            <p>Ocasión Especial: ${reserva.ocasionEspecial}</p>
+            <p>Notas: ${reserva.notasAdicionales}</p>
+            <p>Estado: ${reserva.estadoReserva}</p>
+        `;
+    });
+}
 
 function hacerMesaArrastrable(element, mesa) {
     let offsetX, offsetY, isDragging = false;
@@ -164,9 +185,9 @@ function agregarMesa(capacidad, ubicacion, estado) {
 }
 
 function agregarReserva(nombreCliente, numeroPersonas, fechaReserva, horaReserva, idMesaAsignada, estadoReserva, ocasionEspecial, notasAdicionales){
-    const nuevaIdReserva = listaReservas.length > 0 ? Math.max(...listaReservas.map(m => m.id)) + 1 : 1;
+    const nuevaId = listaReservas.length > 0 ? Math.max(...listaReservas.map(m => m.id)) + 1 : 1;
     const nuevaReserva = new Reserva(
-        nuevaIdReserva,
+        nuevaId,
         nombreCliente,
         numeroPersonas,
         fechaReserva,
@@ -178,13 +199,16 @@ function agregarReserva(nombreCliente, numeroPersonas, fechaReserva, horaReserva
     );
 
     listaReservas.push(nuevaReserva);
+    renderizarReservas();
+    guardarReservas();
 };
+
 
 document.addEventListener('DOMContentLoaded', () => {
     cargarMesas();
 });
 
-document.getElementById("formTable").addEventListener("submit",()=>{
+document.getElementById("formMesa").addEventListener("submit",()=>{
     let capacidadNuevaMesa = document.getElementById("cant").value;
     let ubicacionNuevaMesa = document.getElementById("inputUbi").value;
     let estadoNuevaMesa = document.getElementById("estado").value;
@@ -192,3 +216,52 @@ document.getElementById("formTable").addEventListener("submit",()=>{
     
 })
 
+document.getElementById("formReserva").addEventListener("submit", ()=>{
+    let nombreCliente = document.getElementById("persona").value;
+    let cantPersonas = document.getElementById("cantPersonas").value;
+    let fechaReserva = document.getElementById("fechaReserva").value;
+    let horaReserva = document.getElementById("horaReserva").value;
+    let ocasionEspecial = document.getElementById("ocasionReserva").value;
+    let notasAdicionales = document.getElementById("notasReserva").value
+    let mesaReserva = document.getElementById("mesaReserva").value;
+    let estadoReserva = document.getElementById("estadoReserva").value;
+    agregarReserva(nombreCliente, cantPersonas, fechaReserva, horaReserva, mesaReserva, estadoReserva, ocasionEspecial, notasAdicionales);
+})
+
+//programar mínimo de fecha para el modal de reserva
+
+const hoy = new Date().toISOString().split("T")[0];
+console.log(hoy);
+document.getElementById("fecha").setAttribute("min", hoy);
+
+
+//verificación tiempos de atención input hora de reserva
+const errorParag = document.getElementById('errorParagReserva');
+const error = document.getElementById('error');
+
+const inputHora = document.getElementById("hora");
+
+inputHora.addEventListener("change", ()=>{
+    if(inputHora.value < "08:00" || inputHora.value > "20:00"){
+        errorParag.style.display = 'block';
+        errorParag.innerText = "Error en la hora de la reserva, por favor ingrese una hora válida (entre las 08:00 am y 20:00 pm)";
+        error.style.display = 'block';
+
+    }else{
+        errorParag.style.display = 'none';
+        error.style.display='none';
+    };
+})
+
+//verificación cantidad de personas reserva
+
+const cantPersonas = document.getElementById("cantPersonas");
+
+cantPersonas.addEventListener("change", ()=>{
+    if(cantPersonas.value > 8 || cantPersonas.value < 1){
+        errorParag.innerText = "Error en la cantidad de personas, por favor ingrese una cantidad válida (entre 1 y 8)";
+        error.style.display = 'block';
+    }else{
+        error.style.display = 'none';
+    };
+})
