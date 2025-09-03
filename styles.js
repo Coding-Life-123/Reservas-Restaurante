@@ -37,4 +37,3 @@ document.getElementById('opcionesReservaButton').addEventListener("click", ()=>{
     };
 })
 
-document.getElementById('adminMesas').style.display="none";
