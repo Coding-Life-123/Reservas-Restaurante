@@ -25,7 +25,16 @@ function alternarPagina(pag){
     }else if(pag == 'adminReservas'){
         document.getElementById('adminMesas').style.display="none";
         document.getElementById(pag).style.display="flex";
-    }
+    };
 }
+
+document.getElementById('opcionesReservaButton').addEventListener("click", ()=>{
+    const opciones = document.getElementById('opcionesReserva');
+    if(opciones.style.display === "block"){
+        opciones.style.display = 'none';
+    }else{
+        opciones.style.display = "block";
+    };
+})
 
 document.getElementById('adminMesas').style.display="none";

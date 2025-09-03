@@ -107,13 +107,17 @@ function renderizarReservas(){
         reservaDiv.innerHTML=`
             <div class="reserva-head">
                 <h2>Reserva ${reserva.idReserva}</h2>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                </svg>
-                <div class="opciones-reserva" id="opcionesReserva">
-                    <button>Editar</button>
-                    <button>Pagar Cuenta</button>
-                    <button onclick="eliminarReserva(${reserva.idReserva})">Eliminar</button>
+                <div class="reserva-menu">
+                    <button id="opcionesReservaButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        </svg>
+                    </button>
+                    <div class="opciones-reserva" id="opcionesReserva">
+                        <button>Editar</button>
+                        <button>Pagar Cuenta</button>
+                        <button onclick="eliminarReserva(${reserva.idReserva})">Eliminar</button>
+                    </div>
                 </div>
             </div>            
             <div class="reserva-info">
@@ -252,14 +256,14 @@ document.getElementById("formReserva").addEventListener("submit", ()=>{
 
 const hoy = new Date().toISOString().split("T")[0];
 console.log(hoy);
-document.getElementById("fecha").setAttribute("min", hoy);
+document.getElementById("fechaReserva").setAttribute("min", hoy);
 
 
 //verificación tiempos de atención input hora de reserva
 const errorParag = document.getElementById('errorParagReserva');
 const error = document.getElementById('error');
 
-const inputHora = document.getElementById("hora");
+const inputHora = document.getElementById("horaReserva");
 
 inputHora.addEventListener("change", ()=>{
     if(inputHora.value < "08:00" || inputHora.value > "20:00"){

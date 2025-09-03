@@ -39,7 +39,7 @@ body {
             padding: 10px;
             border-radius: 10px;
             font-weight: 600;
-            background-color: transparent;
+            background-color: #1d3557;
             color: white;
 
             svg{
@@ -56,6 +56,10 @@ body {
                 font-size: 15px;
             }
         }      
+
+        .menu-button:hover{
+            background-color: #16324f;
+        }
 
         .navbar{
             position: absolute;
@@ -190,21 +194,46 @@ body {
 
         .reservas{
             width: 100%;
-            height: 100%;
+            height: 100vh;
             margin: 10px 0px;
             border: 1px solid white;
+            overflow: scroll;
+            padding: 10px;
 
             .reserva{
                 height: fit-content;
-                width: 95%;
+                width: 90%;
                 margin: auto;
                 margin-top: 20px;
                 border-radius: 10px;
-                padding: 10px;
+                padding: 20px;
                 
                 .reserva-head{
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
                     h2{
                         font-size: 22px;
+                    }
+                    .reserva-menu{
+                        display: flex;
+
+                        button{
+                            cursor: pointer;
+                            margin: auto;
+                            height: 16px;
+                            width: 16p;
+                            background-color: transparent;
+                            border: none;
+                            color: white;
+
+                            svg{
+                                margin: auto;
+                            }
+                        }
+                        .opciones-reserva{
+                            display: none;
+                        }
                     }
                 }                
 
