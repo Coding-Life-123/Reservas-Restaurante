@@ -108,12 +108,12 @@ function renderizarReservas(){
             <div class="reserva-head">
                 <h2>Reserva ${reserva.idReserva}</h2>
                 <div class="reserva-menu">
-                    <button id="opcionesReservaButton">
+                    <button onclick="alternarOpciones('opcionesReserva${reserva.idReserva}')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                             <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
                         </svg>
                     </button>
-                    <div class="opciones-reserva" id="opcionesReserva">
+                    <div class="opciones-reserva menu-opciones" id="opcionesReserva${reserva.idReserva}">
                         <button>Editar</button>
                         <button>Pagar Cuenta</button>
                         <button onclick="eliminarReserva(${reserva.idReserva})">Eliminar</button>
@@ -289,3 +289,15 @@ cantPersonas.addEventListener("change", ()=>{
         error.style.display = 'none';
     };
 })
+
+function editarReserva(id){
+
+}
+
+function eliminarReserva(id){
+
+}
+
+function cancelarReserva(id){
+
+}
