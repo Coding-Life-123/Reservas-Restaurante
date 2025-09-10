@@ -1,6 +1,5 @@
 function alternarModal(id, container){
     let estado = getComputedStyle(document.getElementById(id)).display;
-    console.log(estado);
     if(estado == "flex"){
         document.getElementById(id).style.display = "none";
         document.getElementById(container).style.display = "none";
@@ -28,44 +27,53 @@ function alternarPagina(pag){
     };
 }
 
-function alternarOpciones(id){
+function alternarOpciones(id, button){
     const element = document.getElementById(id);
     const estado = getComputedStyle(element).display;
-    console.log(element);
-
+    const rect = button.getBoundingClientRect(); // posición en viewport
+    
     document.querySelectorAll('.menu-opciones').forEach(menu => {
         if (menu.id !== id) {
             menu.style.display = 'none';
+            menu.classList.remove('activo');
         }
     });
-
+    
     if(estado == "flex"){
-        element.style.display = 'none';
+        element.style.opacity = 0;
+        element.classList.remove('activo');
+        setTimeout(() => {
+            element.style.display = 'none';            
+        }, 600);
     }else if(estado == "none"){
         element.style.display = 'flex';
+        setTimeout(() => {
+            element.style.top = rect.bottom + "px"; 
+            element.style.left = (rect.right - element.offsetWidth) + "px";
+            element.style.opacity = 1;
+            element.classList.add('activo');
+        }, 1);
     };
 }
 
-document.addEventListener("click", (event) => {
-    // Selecciona todos los menús abiertos
+document.addEventListener("mousedown", (event) => {
     const menus = document.querySelectorAll(".menu-opciones");
-    console.log(menus);
+
     menus.forEach(menu => {
-        const button = menu.previousElementSibling; // botón de tres puntos
-        console.log(button);
-        // Verifica si el click fue fuera del menú y del botón
+        const button = menu.previousElementSibling; 
         if (!menu.contains(event.target) && !button.contains(event.target)) {
-            menu.style.display = "none";
+            menu.style.opacity = 0;
+            setTimeout(() => {
+                menu.style.display = 'none';            
+            }, 600);
         }
     });
 });
 
-document.addEventListener("click", (event) => {
+document.addEventListener("mousedown", (event) => {
     const menuNav = document.querySelector(".nav-menu");
-    console.log(menuNav);
-    
     const button = menuNav.previousElementSibling; 
-    console.log(button);
+
     if (!menuNav.contains(event.target) && !button.contains(event.target)) {
         hamburger.classList.remove("active");
         menu.classList.remove("open");
@@ -73,7 +81,7 @@ document.addEventListener("click", (event) => {
 });
 
 window.onload = function() {
-  document.getElementById('adminReservas').style.display = "flex";
+  document.getElementById('adminMesas').style.display = "flex";
 };
 
 

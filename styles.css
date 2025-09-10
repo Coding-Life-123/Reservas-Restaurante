@@ -5,7 +5,7 @@
 
 body {
     background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
-    height: 100vh;
+    height: 96vh;
 }
 
 
@@ -167,6 +167,49 @@ body {
                 cursor: grab;
                 transition: transform 0.1s ease;
 
+                .top-menu-mesa{
+                    display: flex;
+                    .mesa-menu{
+                        margin-left: auto;
+                        display: flex;
+
+                        button{
+                            border: none;
+                            background-color: transparent;
+                            color: white;
+                            margin: auto;
+                            height: 16px;
+                            cursor: pointer;
+                            
+                        }
+                        .opciones-mesa{
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            height: fit-content;                         
+                            width: fit-content;
+                            background-color: #2c3e50;
+                            padding: 3px;
+                            border-radius: 10px;
+                            display: none; 
+                            opacity: 0;
+                            transition: opacity 0.3s ease;
+                            flex-direction: column;                            
+                            z-index: 100;
+                            overflow: hidden;
+                            button{
+                                margin-left: 0px;
+                                width: 100%;
+                                height: fit-content;
+                                padding: 5px;
+                                text-align: left;
+                                font-weight: 600;
+                                font-size: 15px;
+                            }
+                        }
+                    }
+                }
+
                 h2 {
                     margin: 0px auto;
                 }
@@ -234,17 +277,18 @@ body {
                             }
                         }
                         .opciones-reserva{
-                            position: absolute;
-                            margin-top: 24px;   
-                            margin-left: -90px;
+                            position: fixed;
+                            top: 0;
+                            left: 0;
                             height: fit-content;                         
                             width: fit-content;
                             background-color: #2c3e50;
                             padding: 3px;
                             border-radius: 10px;
                             display: none; 
-                            flex-direction: column;
-                            
+                            opacity: 0;
+                            transition: opacity 0.3s ease;
+                            flex-direction: column;                            
                             z-index: 100;
                             overflow: hidden;
                             button{
@@ -342,7 +386,7 @@ body {
 
 }
 
-.mesa-container, .reserva-container{
+.mesa-container, .reserva-container, .edit-mesa-container, .edit-reserva-container{
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     display: none;
@@ -353,7 +397,7 @@ body {
     z-index: 100;
     background-color: rgba(0, 0, 0, 0.45);
 
-    .mesa-modal, .reserva-modal{
+    .mesa-modal, .reserva-modal, .edit-mesa-modal, .edit-reserva-modal{
         color: white;
         display: none;
         background-color: #4ca1af;
