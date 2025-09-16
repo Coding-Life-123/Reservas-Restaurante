@@ -30,7 +30,7 @@ function alternarPagina(pag){
 function alternarOpciones(id, button){
     const element = document.getElementById(id);
     const estado = getComputedStyle(element).display;
-    const rect = button.getBoundingClientRect(); // posición en viewport
+    const rect = button.getBoundingClientRect();
     
     document.querySelectorAll('.menu-opciones').forEach(menu => {
         if (menu.id !== id) {
@@ -63,6 +63,7 @@ document.addEventListener("mousedown", (event) => {
         const button = menu.previousElementSibling; 
         if (!menu.contains(event.target) && !button.contains(event.target)) {
             menu.style.opacity = 0;
+            menu.classList.remove("activo")
             setTimeout(() => {
                 menu.style.display = 'none';            
             }, 600);

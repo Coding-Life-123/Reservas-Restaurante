@@ -85,16 +85,16 @@ function renderizarMesas() {
             <div class="top-menu-mesa">
                 <h2>Mesa ${mesa.id}</h2>
                 <div class="mesa-menu">
-                    <button class="no-draggable" onclick="alternarOpciones('opcionesMesa${mesa.id}', this)">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                    <button onclick="alternarOpciones('opcionesMesa${mesa.id}', this); event.stopPropagation();">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
                         </svg>
                     </button>
-                    <div class="opciones-mesa menu-opciones" id="opcionesMesa${mesa.id}">
-                        <button onclick="modalEditarMesa(${mesa.id})">Editar Mesa</button>
-                        <button onclick="crearReservaDeMesa(${mesa.id})">Reservar</button>
-                        <button onclick="deshabilitarMesa(${mesa.id}, 'ocupada')">Estado: Ocupada</button>
-                        <button onclick="deshabilitarMesa(${mesa.id}, 'deshabilitada')">Estado: Deshabilitada</button>
+                    <div class="opciones-mesa" id="opcionesMesa${mesa.id}">
+                        <button onclick="editarMesa(${mesa.id})">Editar Mesa</button>
+                        <button onclick="crearReservaParaMesa(${mesa.id})">Reservar</button>
+                        <button onclick="cambiarEstadoMesa(${mesa.id}, 'ocupada')">Estado: Ocupada</button>
+                        <button onclick="cambiarEstadoMesa(${mesa.id}, 'deshabilitada')">Estado: Deshabilitada</button>
                         <button onclick="eliminarMesa(${mesa.id})">Eliminar</button>
                     </div>
                 </div>
@@ -109,6 +109,12 @@ function renderizarMesas() {
         docMesas.appendChild(tableDiv);
         
         hacerMesaArrastrable(tableDiv, mesa);
+
+        const opcionesMesa = tableDiv.querySelector('.opciones-mesa');
+        opcionesMesa.addEventListener('mousedown', (e) => {
+            console.log("no propagacion")
+            e.stopPropagation();
+        });
     });
 }
 
@@ -161,65 +167,59 @@ function renderizarReservas(renderReservas = listaReservas){
 
 function hacerMesaArrastrable(element, mesa) {
     let offsetX, offsetY, isDragging = false;
-        
 
     element.addEventListener('mousedown', (e) => {
-
-        let listaActivos = [];
-
-        document.querySelectorAll(".opciones-mesa").forEach(item => {
-            listaActivos.push(item.classList.contains("activo"));
-        });
-
-        let esActivo = listaActivos.includes(true)
-
-        console.log(listaActivos.includes(true));
-        
-
-        if(e.target.closest('.no-draggable')){
+        if (e.target.closest('.menu-opciones')) {
             return;
-        };
-        
+        }
+
+        if (e.target.closest('.no-draggable')) {
+            e.stopPropagation();
+            return;
+        }
+
         isDragging = true;
-        
+
         const rect = element.getBoundingClientRect();
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
-        
+
         element.style.cursor = 'grabbing';
         element.style.zIndex = '10';
-        
+
         e.preventDefault();
     });
-    
+
     document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
-        
+
         const container = document.getElementById('tablesContainer');
         const containerRect = container.getBoundingClientRect();
-        
+
         let x = e.clientX - containerRect.left - offsetX;
         let y = e.clientY - containerRect.top - offsetY;
-        
+
         x = Math.max(0, Math.min(x, containerRect.width - element.offsetWidth));
         y = Math.max(0, Math.min(y, containerRect.height - element.offsetHeight));
-        
+
         element.style.left = `${x}px`;
         element.style.top = `${y}px`;
-        
+
         mesa.x = x;
         mesa.y = y;
     });
-    
+
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
             element.style.cursor = 'grab';
             element.style.zIndex = '1';
-            guardarMesas(); 
+            guardarMesas();
         }
     });
 }
+
+
 
 console.log(listaMesas.length > 0 ? Math.max(...listaMesas.map(m => m.id)) + 1 : 1)
 
