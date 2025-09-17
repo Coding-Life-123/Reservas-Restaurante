@@ -34,7 +34,7 @@
       <!--administrador reservas-->
       <div class="admin-reservas" id="adminReservas">
         <h1>Administración de Reservas</h1>
-        <button class="addReserva" onclick="alternarModal('modalReserva', 'reservaContainer')">+ Reserva</button>
+        <button class="addReserva" onclick="alternarModal('modalReserva', 'reservaContainer'), mostrarMesasDisponiblesReserva()">+ Reserva</button>
         <div class="reservas" id="reservasContainer"></div>
       </div>
     </div>
@@ -111,7 +111,9 @@
           </div>
           <div class="form-group">
             <label for="mesaReserva">Número de Mesa Asignada:</label>
-            <input type="number" name="mesaReserva" id="mesaReserva">
+            <select name="numMesa" id="numMesaAsignada">
+
+            </select>
           </div>
           <div class="form-group">
             <label for="estadoReserva">Estado de la Reserva:</label>
@@ -145,6 +147,16 @@
     <div class="edit-reserva-container" id="editReservaContainer">
       <dialog class="edit-reserva-modal" id="editReservaModal">
 
+      </dialog>
+    </div>
+    <div class="aviso-eliminar-mesa" id="avisoEliminarMesa">
+      <dialog class="aviso-eliminar-mesa-modal" id="avisoEliminarMesaModal">
+
+      </dialog>
+    </div>
+    <div class="aviso-eliminar-reserva" id="avisoEliminarReserva">
+      <dialog class="aviso-eliminar-reserva-modal" id="avisoEliminarReservaModal">
+        
       </dialog>
     </div>
     <script src="main.js"></script>

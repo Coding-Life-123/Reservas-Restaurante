@@ -84,23 +84,29 @@ function renderizarMesas() {
         tableDiv.innerHTML = `
             <div class="top-menu-mesa">
                 <h2>Mesa ${mesa.id}</h2>
-                <div class="mesa-menu">
-                    <button onclick="alternarOpciones('opcionesMesa${mesa.id}', this); event.stopPropagation();">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
-                        </svg>
-                    </button>
-                    <div class="opciones-mesa" id="opcionesMesa${mesa.id}">
-                        <button onclick="editarMesa(${mesa.id})">Editar Mesa</button>
-                        <button onclick="crearReservaParaMesa(${mesa.id})">Reservar</button>
-                        <button onclick="cambiarEstadoMesa(${mesa.id}, 'ocupada')">Estado: Ocupada</button>
-                        <button onclick="cambiarEstadoMesa(${mesa.id}, 'deshabilitada')">Estado: Deshabilitada</button>
-                        <button onclick="eliminarMesa(${mesa.id})">Eliminar</button>
-                    </div>
-                </div>
             </div>
             <img class="tables-image" src="./tables-images/Mesa${mesa.capacidad}.jpeg"/>
             <div><strong>Ubicación:</strong> <p>${mesa.ubicacion}</p></div>
+            <div class="opciones-mesa">
+                <button class="no-draggable" onclick="modalEditarMesa(${mesa.id})">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                    </svg>
+                </button>
+                <button class="no-draggable" onclick="crearReservaDeMesa(${mesa.id})">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-check" viewBox="0 0 16 16">
+                        <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                    </svg>
+                </button>
+                <button class="no-draggable" onclick="eliminarMesa(${mesa.id})">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>                
+                </button>
+            </div>
         `;
         
         tableDiv.style.left = `${mesa.x}px`;
@@ -109,12 +115,6 @@ function renderizarMesas() {
         docMesas.appendChild(tableDiv);
         
         hacerMesaArrastrable(tableDiv, mesa);
-
-        const opcionesMesa = tableDiv.querySelector('.opciones-mesa');
-        opcionesMesa.addEventListener('mousedown', (e) => {
-            console.log("no propagacion")
-            e.stopPropagation();
-        });
     });
 }
 
@@ -169,10 +169,6 @@ function hacerMesaArrastrable(element, mesa) {
     let offsetX, offsetY, isDragging = false;
 
     element.addEventListener('mousedown', (e) => {
-        if (e.target.closest('.menu-opciones')) {
-            return;
-        }
-
         if (e.target.closest('.no-draggable')) {
             e.stopPropagation();
             return;
@@ -264,46 +260,40 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarReservas();
 });
 
-document.getElementById("formMesa").addEventListener("submit",()=>{
-    let capacidadNuevaMesa = document.getElementById("cant").value;
-    let ubicacionNuevaMesa = document.getElementById("inputUbi").value;
-    let estadoNuevaMesa = document.getElementById("estado").value;
-    agregarMesa(capacidadNuevaMesa, ubicacionNuevaMesa, estadoNuevaMesa);
-    alternarModal('modalMesa', 'mesaContainer');
-})
+const errorParagReserva = document.getElementById('errorParagReserva');
+const error = document.getElementById('error');
+const botonEnviarReserva = document.getElementById("submitBtnReserva")
 
-document.getElementById("formReserva").addEventListener("submit", ()=>{
-    let nombreCliente = document.getElementById("persona").value;
-    let cantPersonas = parseInt(document.getElementById("cantPersonas").value);
-    let fechaReserva = document.getElementById("fechaReserva").value;
-    let horaReserva = document.getElementById("horaReserva").value;
-    let ocasionEspecial = document.getElementById("ocasionReserva").value;
-    let notasAdicionales = document.getElementById("notasReserva").value
-    let mesaReserva = parseInt(document.getElementById("mesaReserva").value);
-    let estadoReserva = document.getElementById("estadoReserva").value;
-    agregarReserva(nombreCliente, cantPersonas, fechaReserva, horaReserva, mesaReserva, estadoReserva, ocasionEspecial, notasAdicionales);
-    alternarModal('modalReserva', 'reservaContainer');
+//verificación nombre de cliente obligatorio
+const nombCliente = document.getElementById("persona");
+
+nombCliente.addEventListener("change", ()=>{
+    if(nombCliente.value.trim() == "" || nombCliente.value == null){
+        errorParagReserva.style.display = 'block';
+        errorParagReserva.innerText = "Error en el nombre del cliente, por favor ingrese un nombre válido";
+        error.style.display = 'block';
+        botonEnviarReserva.setAttribute("disabled", "disabled");
+    }else{
+        errorParagReserva.style.display = 'none';
+        error.style.display='none';
+    };
 })
 
 //programar mínimo de fecha para el modal de reserva
-
 const hoy = new Date().toISOString().split("T")[0];
 document.getElementById("fechaReserva").setAttribute("min", hoy);
 
 //verificación tiempos de atención input hora de reserva
-const errorParag = document.getElementById('errorParagReserva');
-const error = document.getElementById('error');
-
 const inputHora = document.getElementById("horaReserva");
 
 inputHora.addEventListener("change", ()=>{
     if(inputHora.value < "08:00" || inputHora.value > "20:00"){
-        errorParag.style.display = 'block';
-        errorParag.innerText = "Error en la hora de la reserva, por favor ingrese una hora válida (entre las 08:00 am y 20:00 pm)";
+        errorParagReserva.style.display = 'block';
+        errorParagReserva.innerText = "Error en la hora de la reserva, por favor ingrese una hora válida (entre las 08:00 am y 20:00 pm)";
         error.style.display = 'block';
-        botonEnviarEditReserva.setAttribute("disabled", "disabled");
+        botonEnviarReserva.setAttribute("disabled", "disabled");
     }else{
-        errorParag.style.display = 'none';
+        errorParagReserva.style.display = 'none';
         error.style.display='none';
     };
 })
@@ -311,11 +301,10 @@ inputHora.addEventListener("change", ()=>{
 //verificación cantidad de personas reserva
 
 const cantPersonas = document.getElementById("cantPersonas");
-const botonEnviarReserva = document.getElementById("submitBtnReserva")
 
 cantPersonas.addEventListener("change", ()=>{
     if(cantPersonas.value > 8 || cantPersonas.value < 1){
-        errorParag.innerText = "Error en la cantidad de personas, por favor ingrese una cantidad válida (entre 1 y 8)";
+        errorParagReserva.innerText = "Error en la cantidad de personas, por favor ingrese una cantidad válida (entre 1 y 8)";
         error.style.display = 'block';
         botonEnviarReserva.setAttribute("disabled", "disabled");
     }else{
@@ -325,23 +314,85 @@ cantPersonas.addEventListener("change", ()=>{
 })
 
 function crearReservaDeMesa(id){
-    console.log("reservar");
+    console.log("reservar", id);
+    alternarModal('modalReserva', 'reservaContainer');
 }
 
 function modalEditarMesa(id){
-    console.log("editar mesa");
+    alternarModal("editMesaModal", "editMesaContainer");
+    let mesa = listaMesas.find(mesa => mesa.id === id);
+    let idMesa = listaMesas.findIndex(mesa => mesa.id === id);
+    let element = document.getElementById("editMesaModal");
+    console.log(mesa)
+    element.innerHTML = `
+        <button onclick="alternarModal('editMesaModal', 'editMesaContainer')">X</button>
+        <h1>Editar Mesa ${mesa.id}</h1>
+
+        <form id="formEditMesa">
+            <div class="form-group">
+                <label for="editCapacidad">Capacidad: </label>
+                <input type="number" name="capacidad" id="editCapacidad" value="${mesa.capacidad}">
+            </div>
+            <div class="form-group">
+                <label for="editUbicacion">Ubicación: </label>
+                <input type="text" name="ubicacion" id="editUbicacion" value="${mesa.ubicacion}">
+            </div>
+            <div class="form-group">
+                <label for="editEstado">Estado: </label>
+                <select name="editEstado" id="editEstado">
+                  <option value="disponible">Disponible</option>
+                  <option value="ocupada">Ocupada</option>
+                  <option value="deshabilitada">Deshabilitada</option>
+                </select>
+            </div>
+            <div class="error" id="editErrorMesa">
+                <strong>Error:</strong>
+                <p class="error-parag" id="errorParagEditMesa">
+
+                </p>
+            </div>
+            <button type="submit" class="submit-btn" id="submitBtnEditMesa">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+                </svg>
+            </button>
+        </form>
+    `
+
+    document.getElementById("formEditMesa").addEventListener("submit", ()=>{
+        let editJSON = {
+            capacidad : document.getElementById("editCapacidad").value,
+            ubicacion : document.getElementById("editUbicacion").value,
+            estado : document.getElementById("editEstado").value
+        }
+        console.log(editJSON);
+
+        actualizarMesa(idMesa, editJSON)
+    })
 }
 
 function actualizarMesa(index, JSON){
-    console.log("actualizar mesa");
+    const mesaActual = listaMesas[index];
+    mesaActual.capacidad = JSON.capacidad;
+    mesaActual.ubicacion = JSON.ubicacion;
+    mesaActual.estado = JSON.estado;
+    
+    guardarMesas();
+    renderizarMesas();
+    console.log("Mesa subida exitosamente");
+
 }
 
 function eliminarMesa(id){
-    console.log("eliminar mesa");
-}
-
-function cambiarEstadoMesa(id, estado){
-    console.log(`cambiar estado de mesa ${id}, ${estado}`);
+    const index = listaMesas.findIndex(mesa => mesa.id === id);
+    if (index !== -1) {
+            console.log("Mesa eliminada", listaMesas[index]);
+            listaMesas.splice(index, 1)
+        } else {
+            console.error("Reserva no encontrada con id:", id);
+        }
+        guardarMesas();
+        renderizarMesas();
 }
 
 function modalEditarReserva(id){
@@ -380,7 +431,9 @@ function modalEditarReserva(id){
           </div>
           <div class="form-group">
             <label for="editMesaReserva">Número de Mesa Asignada:</label>
-            <input type="number" name="editMesaReserva" id="editMesaReserva" value="${reserva.idMesaAsignada}">
+            <select name="editNumMesaReserva" id="editNumMesaAsignada">
+            
+            </select>
           </div>
           <div class="form-group">
             <label for="editEstadoReserva">Estado de la Reserva:</label>
@@ -398,13 +451,45 @@ function modalEditarReserva(id){
 
             </p>
           </div>
-          <button onclick="" class="submit-btn" id="submitBtnEditReserva">
+          <button type="submit" class="submit-btn" id="submitBtnEditReserva">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1" class="bi bi-arrow-right" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
             </svg>
           </button>
         </form>
     `
+
+        document.getElementById("editFechaReserva").addEventListener("change", mostrarMesasDisponiblesEditarReserva);
+        document.getElementById("editHoraReserva").addEventListener("change", mostrarMesasDisponiblesEditarReserva);
+
+        function mostrarMesasDisponiblesEdicion() {
+        const select = document.getElementById("editNumMesaAsignada");
+        select.innerHTML = '';
+
+        const fecha = document.getElementById("editFechaReserva").value;
+        const hora = document.getElementById("editHoraReserva").value;
+
+        if (!fecha || !hora) {
+            select.innerHTML = `<option disabled>Seleccione fecha y hora</option>`;
+            return;
+        }
+
+        let mesasDisponibles = listaMesas.filter(mesa =>
+            mesa.estado == "disponible" && (
+                mesa.id == reserva.idMesaAsignada || estaMesaDisponible(mesa.id, fecha, hora)
+            )
+        );
+
+        if (mesasDisponibles.length === 0) {
+            select.innerHTML = `<option disabled>No hay mesas disponibles</option>`;
+        } else {
+            mesasDisponibles.forEach(mesa => {
+                select.innerHTML += `<option value="${mesa.id}" ${mesa.id == reserva.idMesaAsignada ? "selected" : ""}>Mesa ${mesa.id}</option>`;
+            });
+        }
+    }
+
+    mostrarMesasDisponiblesEdicion();
 
     document.getElementById("formEditReserva").addEventListener("submit", ()=>{
 
@@ -490,11 +575,16 @@ function finalizarReserva(id) {
     } else {
         console.error("Reserva no encontrada con id:", id);
     }
+    guardarReservas();
     renderizarReservas();
 }
 
+function avisoEliminarReserva(id){
+
+}
 
 function eliminarReserva(id){
+    
     let index = listaReservas.findIndex(reserva => reserva.idReserva === id);
 
     if (index !== -1) {
@@ -503,12 +593,107 @@ function eliminarReserva(id){
     } else {
         console.error("Reserva no encontrada con id:", id);
     }
+    guardarReservas();
     renderizarReservas();
 }
-console.log(hoy);
 
 listaReservas = JSON.parse(localStorage.getItem("reservasRestaurante"));
-console.log(listaMesas);
-console.log(listaReservas);
+
+function estaMesaDisponible(idMesa, fecha, horaInicio) {
+    const inicioNueva = new Date(`${fecha}T${horaInicio}`);
+    const finNueva = new Date(inicioNueva.getTime() + 2 * 60 * 60 * 1000); 
+
+    const reservasMesa = listaReservas.filter(r => r.idMesaAsignada == idMesa && r.fechaReserva === fecha);
+
+    for (let reserva of reservasMesa) {
+        const inicioExistente = new Date(`${reserva.fechaReserva}T${reserva.horaReserva}`);
+        const finExistente = new Date(inicioExistente.getTime() + 2 * 60 * 60 * 1000);
+
+        if (inicioNueva < finExistente && finNueva > inicioExistente) {
+            return false; 
+        }
+    }
+
+    return true; 
+}
+
+
+function mostrarMesasDisponiblesReserva() {
+    const select = document.getElementById("numMesaAsignada");
+    select.innerHTML = '';
+
+    const fechaReserva = document.getElementById("fechaReserva").value;
+    const horaReserva = document.getElementById("horaReserva").value;
+
+    if (!fechaReserva || !horaReserva) {
+        select.innerHTML = `<option disabled>Seleccione fecha y hora primero</option>`;
+        return;
+    }
+
+    let mesasDisponibles = listaMesas.filter(mesa => 
+        mesa.estado == "disponible" && estaMesaDisponible(mesa.id, fechaReserva, horaReserva)
+    );
+    
+    if (mesasDisponibles.length === 0) {
+        select.innerHTML = `<option disabled>No hay mesas disponibles</option>`;
+    } else {
+        mesasDisponibles.forEach(mesa => {
+            select.innerHTML += `
+                <option value="${mesa.id}">Mesa ${mesa.id}</option>
+            `;
+        });
+    }
+}
+
+function mostrarMesasDisponiblesEditarReserva() {
+    const select = document.getElementById("editNumMesaAsignada");
+    select.innerHTML = '';
+
+    const fechaReserva = document.getElementById("editFechaReserva").value;
+    const horaReserva = document.getElementById("editHoraReserva").value;
+
+    if (!fechaReserva || !horaReserva) {
+        select.innerHTML = `<option disabled>Seleccione fecha y hora primero</option>`;
+        return;
+    }
+
+    let mesasDisponibles = listaMesas.filter(mesa => 
+        mesa.estado == "disponible" && estaMesaDisponible(mesa.id, fechaReserva, horaReserva)
+    );
+    
+    if (mesasDisponibles.length === 0) {
+        select.innerHTML = `<option disabled>No hay mesas disponibles</option>`;
+    } else {
+        mesasDisponibles.forEach(mesa => {
+            select.innerHTML += `
+                <option value="${mesa.id}">Mesa ${mesa.id}</option>
+            `;
+        });
+    }
+}
+
+document.getElementById("fechaReserva").addEventListener("change", mostrarMesasDisponiblesReserva);
+document.getElementById("horaReserva").addEventListener("change", mostrarMesasDisponiblesReserva);
+
+document.getElementById("formMesa").addEventListener("submit",()=>{
+    let capacidadNuevaMesa = document.getElementById("cant").value;
+    let ubicacionNuevaMesa = document.getElementById("inputUbi").value;
+    let estadoNuevaMesa = document.getElementById("estado").value;
+    agregarMesa(capacidadNuevaMesa, ubicacionNuevaMesa, estadoNuevaMesa);
+    alternarModal('modalMesa', 'mesaContainer');
+})
+
+document.getElementById("formReserva").addEventListener("submit", ()=>{
+    let nombreCliente = document.getElementById("persona").value;
+    let cantPersonas = parseInt(document.getElementById("cantPersonas").value);
+    let fechaReserva = document.getElementById("fechaReserva").value;
+    let horaReserva = document.getElementById("horaReserva").value;
+    let ocasionEspecial = document.getElementById("ocasionReserva").value;
+    let notasAdicionales = document.getElementById("notasReserva").value
+    let mesaReserva = document.getElementById("numMesaAsignada").value;
+    let estadoReserva = document.getElementById("estadoReserva").value;
+    agregarReserva(nombreCliente, cantPersonas, fechaReserva, horaReserva, mesaReserva, estadoReserva, ocasionEspecial, notasAdicionales);
+    alternarModal('modalReserva', 'reservaContainer');
+})
 
 
