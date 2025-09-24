@@ -280,7 +280,7 @@ nombCliente.addEventListener("change", ()=>{
 })
 
 //programar mínimo de fecha para el modal de reserva
-const hoy = new Date().toISOString().split("T")[0];
+/*const hoy = new Date().toISOString().split("T")[0];
 document.getElementById("fechaReserva").setAttribute("min", hoy);
 
 //verificación tiempos de atención input hora de reserva
@@ -296,7 +296,7 @@ inputHora.addEventListener("change", ()=>{
         errorParagReserva.style.display = 'none';
         error.style.display='none';
     };
-})
+})*/
 
 //verificación cantidad de personas reserva
 
