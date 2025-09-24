@@ -601,13 +601,13 @@ listaReservas = JSON.parse(localStorage.getItem("reservasRestaurante"));
 
 function estaMesaDisponible(idMesa, fecha, horaInicio) {
     const inicioNueva = new Date(`${fecha}T${horaInicio}`);
-    const finNueva = new Date(inicioNueva.getTime() + 2 * 60 * 60 * 1000); 
+    const finNueva = new Date(inicioNueva.getTime() + 4 * 60 * 60 * 1000); 
 
     const reservasMesa = listaReservas.filter(r => r.idMesaAsignada == idMesa && r.fechaReserva === fecha);
 
     for (let reserva of reservasMesa) {
         const inicioExistente = new Date(`${reserva.fechaReserva}T${reserva.horaReserva}`);
-        const finExistente = new Date(inicioExistente.getTime() + 2 * 60 * 60 * 1000);
+        const finExistente = new Date(inicioExistente.getTime() + 4 * 60 * 60 * 1000);
 
         if (inicioNueva < finExistente && finNueva > inicioExistente) {
             return false; 
@@ -696,4 +696,58 @@ document.getElementById("formReserva").addEventListener("submit", ()=>{
     alternarModal('modalReserva', 'reservaContainer');
 })
 
+
+let dia = 0
+
+let reservasDeHoy = [];
+
+function verificarDia(){
+    const fecha = new Date();
+
+    const rawDia = fecha.toLocaleDateString("es-CO").split("/").reverse()
+    console.log(rawDia)
+
+    if(rawDia[1].length == 1){
+        let saveNum = "0" + rawDia[1];
+        rawDia.splice(1, 1, saveNum);
+        dia = rawDia.join("-");
+    }else{
+        dia = rawDia.join("-");
+    }
+
+    reservasDeHoy = listaReservas.filter(reserva => reserva.fechaReserva === dia)
+    console.log(listaReservas[0].fechaReserva);
+    console.log(dia)
+    console.log(reservasDeHoy)
+}
+
+verificarDia()
+
+const intervaloDiario = 1 * 24 * 60 * 60 * 1000
+
+setInterval(() => {
+    verificarDia()
+}, intervaloDiario);
+
+
+
+verificarDia()
+setInterval(() => {
+    const fecha = new Date();
+    let hora = fecha.toLocaleTimeString("es-CO", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+    });
+    let reservasDeAhora;
+    console.log(hora)
+    reservasDeAhora = reservasDeHoy.filter(reserva => reserva.horaReserva === hora)
+    console.log(reservasDeAhora);
+    reservasDeAhora.forEach(reserva => {
+      console.log(reserva.idMesaAsignada)
+      document.getElementById('mesa-'+reserva.idMesaAsignada).classList.add("ocupada");
+      document.getElementById('mesa-'+reserva.idMesaAsignada).classList.remove("disponible");
+      document.getElementById('mesa-'+reserva.idMesaAsignada).classList.remove("deshabilitada");
+    })
+}, 7000);
 
