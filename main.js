@@ -396,6 +396,7 @@ function eliminarMesa(id){
 }
 
 function modalEditarReserva(id){
+    let hoy = new Date().toISOString().split("T")[0];
     alternarModal("editReservaModal","editReservaContainer");
     let reserva = listaReservas.find(reserva => reserva.idReserva === id);
     let idReserva = listaReservas.findIndex(reserva => reserva.idReserva === id);
