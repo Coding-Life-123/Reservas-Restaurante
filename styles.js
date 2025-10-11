@@ -20,11 +20,12 @@ document.getElementById('menuButton').addEventListener("click", ()=>{
 function alternarPagina(pag){
     if(pag == 'adminMesas'){
         document.getElementById('adminReservas').style.display="none";
-        document.getElementById(pag).style.display="flex";
+        document.getElementById(pag).style.display="flex";        
     }else if(pag == 'adminReservas'){
         document.getElementById('adminMesas').style.display="none";
-        document.getElementById(pag).style.display="flex";
+        document.getElementById(pag).style.display="flex";        
     };
+    localStorage.setItem("pag", pag);
 }
 
 function alternarOpciones(id, button){
@@ -82,7 +83,8 @@ document.addEventListener("mousedown", (event) => {
 });
 
 window.onload = function() {
-  document.getElementById('adminReservas').style.display = "flex";
+    const pag = localStorage.getItem("pag");
+    document.getElementById(pag).style.display = "flex";
 };
 
 
