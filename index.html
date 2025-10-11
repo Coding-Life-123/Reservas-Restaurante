@@ -34,7 +34,20 @@
       <!--administrador reservas-->
       <div class="admin-reservas" id="adminReservas">
         <h1>Administración de Reservas</h1>
-        <button class="addReserva" onclick="alternarModal('modalReserva', 'reservaContainer'), mostrarMesasDisponiblesReserva()">+ Reserva</button>
+        <div class="container flex reserva-header">
+          <button class="addReserva" onclick="alternarModal('modalReserva', 'reservaContainer'), mostrarMesasDisponiblesReserva()">+ Reserva</button>
+          <div class="filters-form" id="filtersForm">
+            <p>Filtros:</p>
+            <input id="filterDate" type="date">
+            <select name="filtroEstado" id="selectFiltroReserva">
+              <option value="Todas">Todas</option>
+              <option value="confirmada">Confirmada</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="finalizada">Finalizada</option>
+            </select>
+            <button type="submit" class="submit-btn" id="filtersFormSubmitBtn" form="filtersForm">Buscar</button>
+          </div>
+        </div>
         <div class="reservas" id="reservasContainer"></div>
       </div>
     </div>
@@ -161,6 +174,5 @@
     </div>
     <script src="main.js"></script>
     <script src="styles.js"></script>
-    <script src="pruebas.js"></script>
   </body>
 </html>

@@ -82,7 +82,7 @@ document.addEventListener("mousedown", (event) => {
 });
 
 window.onload = function() {
-  document.getElementById('adminMesas').style.display = "flex";
+  document.getElementById('adminReservas').style.display = "flex";
 };
 
 

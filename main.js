@@ -431,7 +431,7 @@ function modalEditarReserva(id){
             <input type="text" name="editNotasReserva" id="editNotasReserva" value="${reserva.notasAdicionales}">
           </div>
           <div class="form-group">
-            <label for="editMesaReserva">Número de Mesa Asignada:</label>
+            <label for="editNumMesaAsignada">Número de Mesa Asignada:</label>
             <select name="editNumMesaReserva" id="editNumMesaAsignada">
             
             </select>
@@ -501,7 +501,7 @@ function modalEditarReserva(id){
             editHora : document.getElementById("editHoraReserva").value,
             editOcasion : document.getElementById("editOcasionReserva").value,
             editNotas : document.getElementById("editNotasReserva").value,
-            editIdMesa : document.getElementById("editMesaReserva").value,
+            editIdMesa : document.getElementById("editNumMesaAsignada").value,
             editEstado : document.getElementById("editEstadoReserva").value
         }
 
@@ -561,10 +561,10 @@ function actualizarReserva(index, JSON){
     reservaActual.notasAdicionales = JSON.editNotas;
     reservaActual.idMesaAsignada = JSON.editIdMesa;
     reservaActual.estadoReserva = JSON.editEstado;
-    
+    console.log()
+    console.log("subido exitosamente");
     guardarReservas();
     renderizarReservas();
-    console.log("subido exitosamente");
 }
 
 function finalizarReserva(id) {
@@ -697,6 +697,25 @@ document.getElementById("formReserva").addEventListener("submit", ()=>{
     alternarModal('modalReserva', 'reservaContainer');
 })
 
+document.getElementById("filtersFormSubmitBtn").addEventListener("click", ()=>{
+    const fecha = document.getElementById("filterDate").value;
+    const estado = document.getElementById("selectFiltroReserva").value;
+
+    if(fecha === "" && estado == "Todas"){
+        renderizarReservas(listaReservas)
+    }else if(fecha === "" && estado !== "Todas"){
+        let reservasEstado = listaReservas.filter(reserva => reserva.estadoReserva == estado);
+        renderizarReservas(reservasEstado);
+    }else if(fecha !== "" && estado == "Todas"){
+        let reservasFecha = listaReservas.filter(reserva => reserva.fechaReserva == fecha);
+        renderizarReservas(reservasFecha);
+    }else if(fecha && estado){
+        let reservasFecha = listaReservas.filter(reserva => reserva.fechaReserva == fecha);
+        let reservasEstado = reservasFecha.filter(reserva => reserva.estadoReserva == estado);
+        renderizarReservas(reservasEstado);
+    }
+    
+})
 
 let dia = 0
 
@@ -751,4 +770,3 @@ setInterval(() => {
       document.getElementById('mesa-'+reserva.idMesaAsignada).classList.remove("deshabilitada");
     })
 }, 7000);
-
